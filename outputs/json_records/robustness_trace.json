@@ -1,0 +1,110 @@
+[
+  {
+    "base_image_id": "test_000",
+    "corrupted_file": "test_000_blur.png",
+    "stage1_pixel_stats": {
+      "clean_mean": 4.5717315673828125,
+      "corrupt_mean": 4.196685791015625,
+      "clean_std": 9.127003731320464,
+      "corrupt_std": 5.088074268149621,
+      "mean_pct_change": -8.203582442140368,
+      "std_pct_change": -44.25252292883616
+    },
+    "stage2_mask_overlap": {
+      "clean_dice_vs_gt": 0.997387328543521,
+      "corrupt_dice_vs_gt": 0.6545764881661067,
+      "clean_iou_vs_gt": 0.9947882736159747,
+      "corrupt_iou_vs_gt": 0.4865207738824447,
+      "dice_drop": 0.34281084037741427
+    },
+    "stage3_feature_table": {
+      "clean_n_objects": 8,
+      "corrupt_n_objects": 7,
+      "clean_mean_area": 191.0,
+      "corrupt_mean_area": 450.42857142857144,
+      "n_objects_pct_change": -12.5
+    },
+    "stage4_llm_narrative": "The image contains 7 objects with varying sizes, as indicated by a moderate range in areas (from 128 to 958 pixels). The eccentricities suggest that some of these objects may be elongated or irregular shapes. While the mean solidities are relatively high, indicating a predominance of convex and well-defined shapes, the small range in solidity values suggests there is some variation in shape regularity among the objects."
+  },
+  {
+    "base_image_id": "test_000",
+    "corrupted_file": "test_000_lowcontrast.png",
+    "stage1_pixel_stats": {
+      "clean_mean": 4.5717315673828125,
+      "corrupt_mean": 108.52799987792969,
+      "clean_std": 9.127003731320464,
+      "corrupt_std": 1.3744484657348643,
+      "mean_pct_change": 2273.892605119996,
+      "std_pct_change": -84.9408569215423
+    },
+    "stage2_mask_overlap": {
+      "clean_dice_vs_gt": 0.997387328543521,
+      "corrupt_dice_vs_gt": 0.045743935351584566,
+      "clean_iou_vs_gt": 0.9947882736159747,
+      "corrupt_iou_vs_gt": 0.023407339591022498,
+      "dice_drop": 0.9516433931919364
+    },
+    "stage3_feature_table": {
+      "clean_n_objects": 8,
+      "corrupt_n_objects": 1,
+      "clean_mean_area": 191.0,
+      "corrupt_mean_area": 65535.0,
+      "n_objects_pct_change": -87.5
+    },
+    "stage4_llm_narrative": "The image depicts a single object that is roughly circular in shape, with minimal eccentricity suggesting it is not elongated or irregular. The mean intensity of 108.5 implies the presence of a dense material or feature within the object. Due to the lack of variation in size (indicated by mean and max area values), the density of objects appears uniform. It cannot be determined if multiple objects are present, as the number of objects equals one."
+  },
+  {
+    "base_image_id": "test_004",
+    "corrupted_file": "test_004_blur.png",
+    "stage1_pixel_stats": {
+      "clean_mean": 17.30096435546875,
+      "corrupt_mean": 16.70623779296875,
+      "clean_std": 27.19328854142087,
+      "corrupt_std": 16.250357047041923,
+      "mean_pct_change": -3.437534156149369,
+      "std_pct_change": -40.2412949705195
+    },
+    "stage2_mask_overlap": {
+      "clean_dice_vs_gt": 0.9967176084424638,
+      "corrupt_dice_vs_gt": 0.6520269493443123,
+      "clean_iou_vs_gt": 0.9934566945754347,
+      "corrupt_iou_vs_gt": 0.48370918767874277,
+      "dice_drop": 0.34469065909815155
+    },
+    "stage3_feature_table": {
+      "clean_n_objects": 43,
+      "corrupt_n_objects": 9,
+      "clean_mean_area": 329.16279069767444,
+      "corrupt_mean_area": 3256.6666666666665,
+      "n_objects_pct_change": -79.06976744186046
+    },
+    "stage4_llm_narrative": "The image contains nine objects, with a relatively narrow range of sizes, as indicated by the moderate standard deviation in area measurements. The shapes appear to be roughly circular or slightly elongated, given the mean eccentricity value close to 0.7. However, some irregularities are present, as suggested by the lower-than-expected solidity values. Overall, the objects exhibit a degree of size and shape variability."
+  },
+  {
+    "base_image_id": "test_004",
+    "corrupted_file": "test_004_lowcontrast.png",
+    "stage1_pixel_stats": {
+      "clean_mean": 17.30096435546875,
+      "corrupt_mean": 110.42533874511719,
+      "clean_std": 27.19328854142087,
+      "corrupt_std": 4.025114718831464,
+      "mean_pct_change": 538.2611739902874,
+      "std_pct_change": -85.19813152462773
+    },
+    "stage2_mask_overlap": {
+      "clean_dice_vs_gt": 0.9967176084424638,
+      "corrupt_dice_vs_gt": 0.3557467947921874,
+      "clean_iou_vs_gt": 0.9934566945754347,
+      "corrupt_iou_vs_gt": 0.21635767147445434,
+      "dice_drop": 0.6409708136502764
+    },
+    "stage3_feature_table": {
+      "clean_n_objects": 43,
+      "corrupt_n_objects": 1,
+      "clean_mean_area": 329.16279069767444,
+      "corrupt_mean_area": 65535.0,
+      "n_objects_pct_change": -97.67441860465117
+    },
+    "stage4_llm_narrative": "The image appears to contain a single, elongated oval-shaped object. The mean area and eccentricity values suggest that this object is quite large, while the high solidity value indicates a relatively regular shape. However, due to the limited information provided, it is not possible to accurately determine the exact size or orientation of the object, and no conclusions can be drawn about the density or distribution of objects in the image."
+  }
+]

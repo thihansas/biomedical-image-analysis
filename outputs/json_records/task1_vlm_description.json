@@ -1,0 +1,46 @@
+{
+  "image_id": "train_004",
+  "split": "train",
+  "naive_prompt": "What is this image showing? Please describe it and tell me if there's anything wrong with the tissue.",
+  "naive_response": "The image shows a fluorescent microscope image of a cell culture stained with DAPI (4',6-diamidino-2-phenylindole), which is a DNA-specific fluorescent dye. The image is showing the nucleus of the cells, which are stained blue. The image is not showing anything wrong with the tissue. The cells appear to be healthy and normal, with no visible signs of damage or abnormalities.",
+  "optimised_prompt": "You are an assistant that provides objective, descriptive observations about a biomedical research image, for educational purposes only. You are NOT a diagnostic tool: you must not name a disease, give a diagnosis, or suggest treatment. Describe only what is visually observable.\n\nLook at the image and report:\n- modality: the imaging/acquisition type you can visually infer (e.g. fluorescence microscopy, brightfield, MRI, X-ray). If you cannot tell, write \"uncertain\".\n- tissue_type: the apparent tissue or specimen type. If you cannot tell, write \"uncertain\".\n- notable_features: 1-2 sentences of purely descriptive observations (shape, distribution, staining/contrast pattern of the objects you see). Do not speculate about pathology.\n- image_quality: a brief comment on focus, contrast, and noise/artifacts. If you cannot judge it, write \"uncertain\".\n\nIf you are not confident about any field, write \"uncertain\" for that field instead of guessing.\n\nRespond with ONLY a single JSON object, no extra commentary, no markdown fences, in exactly this schema:\n{\"modality\": \"...\", \"tissue_type\": \"...\", \"notable_features\": \"...\", \"image_quality\": \"...\"}\n",
+  "optimised_response_json": {
+    "modality": "fluorescence microscopy",
+    "tissue_type": "uncertain",
+    "notable_features": "Bright blue spots are scattered across the image, possibly representing cellular structures or other biological features.",
+    "image_quality": "uncertain"
+  },
+  "optimised_response_raw": "{\"modality\": \"fluorescence microscopy\", \"tissue_type\": \"uncertain\", \"notable_features\": \"Bright blue spots are scattered across the image, possibly representing cellular structures or other biological features.\", \"image_quality\": \"uncertain\"}",
+  "repeated_runs": [
+    {
+      "run": 1,
+      "json": {
+        "modality": "fluorescence microscopy",
+        "tissue_type": "uncertain",
+        "notable_features": "Bright blue spots are scattered throughout the image, with varying sizes and intensities of fluorescence.",
+        "image_quality": "uncertain"
+      },
+      "raw": "{\"modality\": \"fluorescence microscopy\", \"tissue_type\": \"uncertain\", \"notable_features\": \"Bright blue spots are scattered throughout the image, with varying sizes and intensities of fluorescence.\", \"image_quality\": \"uncertain\"}"
+    },
+    {
+      "run": 2,
+      "json": {
+        "modality": "fluorescence microscopy",
+        "tissue_type": "cell culture",
+        "notable_features": "The objects are blue and appear to be evenly distributed across the image, with some overlapping in the middle.",
+        "image_quality": "The image appears to be in focus, with good contrast between the blue objects and the black background, but there is some noise visible in the image."
+      },
+      "raw": "{\"modality\": \"fluorescence microscopy\", \"tissue_type\": \"cell culture\", \"notable_features\": \"The objects are blue and appear to be evenly distributed across the image, with some overlapping in the middle.\", \"image_quality\": \"The image appears to be in focus, with good contrast between the blue objects and the black background, but there is some noise visible in the image.\"}"
+    },
+    {
+      "run": 3,
+      "json": {
+        "modality": "fluorescence microscopy",
+        "tissue_type": "uncertain",
+        "notable_features": "Brightly fluorescent blue spots are scattered throughout the image, with varying sizes and shapes.",
+        "image_quality": "uncertain"
+      },
+      "raw": "{\"modality\": \"fluorescence microscopy\", \"tissue_type\": \"uncertain\", \"notable_features\": \"Brightly fluorescent blue spots are scattered throughout the image, with varying sizes and shapes.\", \"image_quality\": \"uncertain\"}"
+    }
+  ]
+}

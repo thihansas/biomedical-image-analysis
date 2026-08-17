@@ -1,0 +1,132 @@
+{
+  "image_id": "train_004",
+  "split": "train",
+  "n_objects_detected": 37,
+  "region_table_head": [
+    {
+      "label": 1,
+      "area": 267.0,
+      "eccentricity": 0.7612633369806983,
+      "solidity": 0.9501779359430605,
+      "mean_intensity": 66.79775280898876,
+      "perimeter": 62.42640687119285,
+      "major_axis_length": 23.199950213546344,
+      "minor_axis_length": 15.043841873054177,
+      "extent": 0.6054421768707483
+    },
+    {
+      "label": 2,
+      "area": 221.0,
+      "eccentricity": 0.6180638125276129,
+      "solidity": 0.9444444444444444,
+      "mean_intensity": 56.23076923076923,
+      "perimeter": 54.2842712474619,
+      "major_axis_length": 18.943093129686627,
+      "minor_axis_length": 14.891694605714447,
+      "extent": 0.7269736842105263
+    },
+    {
+      "label": 3,
+      "area": 478.0,
+      "eccentricity": 0.8214153471479368,
+      "solidity": 0.7457098283931357,
+      "mean_intensity": 64.75941422594143,
+      "perimeter": 121.78174593052023,
+      "major_axis_length": 39.07560515343612,
+      "minor_axis_length": 22.286007651806024,
+      "extent": 0.5462857142857143
+    },
+    {
+      "label": 4,
+      "area": 2036.0,
+      "eccentricity": 0.8261377797025126,
+      "solidity": 0.5646145313366612,
+      "mean_intensity": 73.52259332023576,
+      "perimeter": 347.30360723121805,
+      "major_axis_length": 93.38778744906031,
+      "minor_axis_length": 52.62104489417782,
+      "extent": 0.36724386724386726
+    },
+    {
+      "label": 5,
+      "area": 223.0,
+      "eccentricity": 0.779992329962398,
+      "solidity": 0.9570815450643777,
+      "mean_intensity": 77.73991031390135,
+      "perimeter": 55.941125496954285,
+      "major_axis_length": 21.433129407049744,
+      "minor_axis_length": 13.412618205622465,
+      "extent": 0.652046783625731
+    },
+    {
+      "label": 6,
+      "area": 253.0,
+      "eccentricity": 0.8114071121936156,
+      "solidity": 0.9844357976653697,
+      "mean_intensity": 78.73517786561264,
+      "perimeter": 58.62741699796952,
+      "major_axis_length": 23.48802506698921,
+      "minor_axis_length": 13.728313600295895,
+      "extent": 0.8461538461538461
+    },
+    {
+      "label": 7,
+      "area": 102.0,
+      "eccentricity": 0.6496240249074936,
+      "solidity": 0.9532710280373832,
+      "mean_intensity": 52.049019607843135,
+      "perimeter": 36.62741699796952,
+      "major_axis_length": 13.098853968991728,
+      "minor_axis_length": 9.958477505042891,
+      "extent": 0.7132867132867133
+    },
+    {
+      "label": 8,
+      "area": 497.0,
+      "eccentricity": 0.8231631013284659,
+      "solidity": 0.8055105348460292,
+      "mean_intensity": 70.07243460764587,
+      "perimeter": 105.63961030678928,
+      "major_axis_length": 36.67148460968506,
+      "minor_axis_length": 20.82225201481204,
+      "extent": 0.6548089591567853
+    },
+    {
+      "label": 9,
+      "area": 355.0,
+      "eccentricity": 0.8099006506235195,
+      "solidity": 0.8700980392156863,
+      "mean_intensity": 68.03098591549296,
+      "perimeter": 79.25483399593904,
+      "major_axis_length": 29.013517948831133,
+      "minor_axis_length": 17.018374424134496,
+      "extent": 0.6339285714285714
+    },
+    {
+      "label": 10,
+      "area": 80.0,
+      "eccentricity": 0.731583384058409,
+      "solidity": 0.9302325581395349,
+      "mean_intensity": 54.525,
+      "perimeter": 33.21320343559643,
+      "major_axis_length": 12.292506501522942,
+      "minor_axis_length": 8.380440555842885,
+      "extent": 0.6837606837606838
+    }
+  ],
+  "numeric_summary": "n_objects = 37\narea: mean=360.9, std=372.1, min=48.0, max=2036.0 (pixels)\neccentricity: mean=0.757 (0=circle, close to 1=elongated)\nsolidity: mean=0.887 (fraction of convex hull filled; lower means more irregular/concave shape)\nmean_intensity: mean=66.9 (per-object mean pixel value)\nextent: mean=0.651 (fraction of bounding box filled)",
+  "llm_paragraph": "The object population consists of 37 objects, indicating a moderate density, with a size spread that spans from relatively small to large objects. The objects exhibit a mix of regular and irregular shapes, with a mean eccentricity value close to 1, suggesting elongated shapes. The mean solidity value is relatively high, indicating that many objects are roughly convex. The overall shape regularity is uncertain due to the presence of elongated objects.",
+  "llm_json": {
+    "n_objects": 37,
+    "density_class": "sparse",
+    "shape_regularity": "irregular",
+    "quality_flag": "uncertain"
+  },
+  "code_derived_json": {
+    "n_objects": 37,
+    "density_class": "normal",
+    "shape_regularity": "irregular",
+    "quality_flag": "ok",
+    "mean_area": 360.86486486486484
+  }
+}
