@@ -65,6 +65,20 @@ outputs/
    error on your machine, install v0.23.4 from
    https://github.com/ollama/ollama/releases/tag/v0.23.4 (Windows: `OllamaSetup.exe`
    from that release page) rather than the latest version.
+
+   **Module lecturer's officially sanctioned fallback:** since this `mllama` bug affects
+   other students too, the lecturer has confirmed it's fine to swap in an alternative
+   local vision model if pinning to v0.23.4 isn't practical (e.g. current Ollama install
+   is managed/can't be downgraded) -- e.g. `qwen2.5vl` / `qwen3-vl`, or a `ministral`
+   vision variant -- or to run `llama3.2-vision` itself in Colab (see the Lab 2 notebook)
+   instead of locally. To substitute a model here, just change `VLM_MODEL` in
+   `src/config.py` to the pulled model's Ollama tag (e.g. `ollama pull qwen2.5vl` then
+   `VLM_MODEL = "qwen2.5vl"`) -- `src/vlm_description.py` and the rest of the pipeline
+   are unchanged, since they only ever reference `config.VLM_MODEL`. Note that swapping
+   models will change the exact VLM outputs from the ones already saved in
+   `outputs/json_records/task1_vlm_description.json` and quoted in the report, so if you
+   re-run Task 1 with a different model, regenerate those before treating the report text
+   as authoritative.
 3. The dataset is already included under `data/nuclei_dataset/`.
 
 ## Running
