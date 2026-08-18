@@ -1,16 +1,4 @@
-"""Task 4: the full hybrid pipeline on unseen test images.
 
-raw image -> U-Net mask -> regionprops feature table -> LLM structured JSON
-record -> one-paragraph narrative. Records are aggregated into a single CSV.
-
-The JSON record's numeric fields (n_objects, mean_area, density_class) are
-always taken from the code-computed regionprops table, never from the LLM's
-own arithmetic -- the LLM only supplies the narrative paragraph and a
-free-text quality_flag. This is what keeps the structured record the
-"source of truth": even if the LLM narrative drifts, the numbers it is
-narrating are fixed and auditable. See classical_features.derive_heuristic_json
-for the equivalent used in Task 2.
-"""
 import json
 
 import numpy as np

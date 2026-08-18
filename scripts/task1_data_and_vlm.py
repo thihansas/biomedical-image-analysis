@@ -1,8 +1,4 @@
-"""Task 1: preprocessing + EDA, then naive-vs-optimised VLM description with llama3.2-vision.
 
-Run from the project root:
-    python scripts/task1_data_and_vlm.py
-"""
 import sys
 from pathlib import Path
 

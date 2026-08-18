@@ -1,5 +1,4 @@
-"""One-off script: build the robustness-propagation figure used in the report
-(clean vs blur vs low-contrast input and predicted mask, for test_000)."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch

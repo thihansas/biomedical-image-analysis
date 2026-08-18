@@ -1,4 +1,4 @@
-"""Segmentation metrics shared by the U-Net evaluation and the Otsu-vs-U-Net comparison."""
+
 import numpy as np
 
 

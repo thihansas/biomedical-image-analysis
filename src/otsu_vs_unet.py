@@ -1,9 +1,4 @@
-"""Compare classical Otsu segmentation against the trained U-Net on the same split.
 
-Produces per-image Dice/IoU for both methods (against the same ground-truth
-masks) so the report can answer "did the U-Net improve on classical Otsu?"
-with numbers and a concrete example image for each side.
-"""
 import json
 
 import numpy as np

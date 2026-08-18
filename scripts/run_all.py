@@ -1,11 +1,4 @@
-"""Run the entire pipeline (Tasks 1-4 + robustness extension) end to end.
 
-Run from the project root:
-    python scripts/run_all.py
-
-Takes roughly 20-40 minutes on a CPU-only machine (most of it spent on the
-llama3.2-vision calls in Task 1 and U-Net training in Task 3).
-"""
 import sys
 from pathlib import Path
 

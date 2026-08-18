@@ -1,9 +1,4 @@
-"""Task 3: train the U-Net, evaluate Dice/IoU, save curves + prediction panels,
-and compare against classical Otsu segmentation on the same validation split.
 
-Run from the project root:
-    python scripts/task3_train_unet.py
-"""
 import sys
 from pathlib import Path
 

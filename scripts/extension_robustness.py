@@ -1,10 +1,4 @@
-"""Extension: trace corruption (blur / low-contrast) through the pipeline.
 
-Requires a trained U-Net checkpoint at outputs/checkpoints/unet_best.pt.
-
-Run from the project root:
-    python scripts/extension_robustness.py
-"""
 import sys
 from pathlib import Path
 

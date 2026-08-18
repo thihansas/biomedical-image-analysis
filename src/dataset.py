@@ -1,4 +1,4 @@
-"""PyTorch Dataset that pairs preprocessed grayscale images with their binary masks."""
+
 import numpy as np
 import torch
 from PIL import Image

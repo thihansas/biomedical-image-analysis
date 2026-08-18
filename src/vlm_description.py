@@ -1,16 +1,4 @@
-"""Task 1 (VLM half): describe a representative image with llama3.2-vision.
 
-Two prompts are compared:
-  * NAIVE_PROMPT     - an unconstrained, diagnosis-inviting prompt (the kind
-                        a first attempt usually looks like).
-  * OPTIMISED_PROMPT - anchors the model as descriptive-not-diagnostic,
-                        forces a fixed JSON schema, and explicitly permits
-                        "uncertain" so the model isn't pressured to guess.
-
-We also run the optimised prompt several times on the same image to show
-that local VLM output is not deterministic run-to-run, which matters for
-how much a downstream user should trust any single call.
-"""
 import json
 from pathlib import Path
 

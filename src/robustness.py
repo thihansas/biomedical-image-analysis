@@ -1,16 +1,4 @@
-"""Extension: trace how image corruption propagates through the pipeline.
 
-The dataset ships pre-corrupted variants of test_000 and test_004 (heavy
-blur and low-contrast) in test_corrupted/images. For each corrupted image we
-compare against its clean counterpart at four stages:
-  1. raw pixel statistics (mean/std intensity)
-  2. U-Net mask overlap (Dice/IoU) against the ORIGINAL ground-truth mask
-  3. the regionprops feature table (n_objects, mean area)
-  4. the LLM narrative/JSON record
-
-This lets us identify the earliest stage where the corruption's effect
-becomes large relative to the clean image's own numbers.
-"""
 import json
 
 import numpy as np

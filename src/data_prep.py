@@ -1,9 +1,4 @@
-"""Task 1 (data half): grayscale + resize preprocessing and exploratory data analysis.
 
-The raw dataset ships as 256x256 RGB PNGs. We still implement an explicit
-grayscale + resize step (rather than assuming the shipped size) so the
-pipeline works unmodified if a different-sized dataset is dropped in later.
-"""
 from pathlib import Path
 
 import matplotlib.pyplot as plt

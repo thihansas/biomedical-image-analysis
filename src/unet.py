@@ -1,10 +1,4 @@
-"""Task 3: a small U-Net for binary nuclei segmentation.
 
-Kept deliberately small (base width 16, 4 down/up stages) since the
-training set is only 80 images and we run on CPU. A full-width U-Net
-(64 base channels as in the original paper) would be slower to train
-and more prone to overfitting on a dataset this size.
-"""
 import torch
 import torch.nn as nn
 

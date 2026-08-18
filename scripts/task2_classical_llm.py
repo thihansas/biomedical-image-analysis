@@ -1,8 +1,4 @@
-"""Task 2: Otsu + regionprops classical features, then numbers-first LLM interpretation.
 
-Run from the project root:
-    python scripts/task2_classical_llm.py
-"""
 import sys
 from pathlib import Path
 

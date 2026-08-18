@@ -1,21 +1,3 @@
-"""
-make_dataset.py
-----------------
-Generate a small, realistic *stained-nuclei* fluorescence-microscopy dataset
-with exact ground-truth instance/binary masks, in the same spirit as the
-2018 Data Science Bowl nuclei set (images + masks), but fully synthetic so
-that (a) it can be distributed without any licensing constraints and
-(b) the ground truth is known exactly, which is what an answer key needs.
-
-Each image is 256x256 RGB (blue-stained nuclei on a dark field, DAPI-like).
-For every image we also save:
-  - a binary mask  (255 = nucleus, 0 = background)
-  - a label mask   (instance labels, 16-bit) for optional instance work
-Ground-truth per-image statistics are written to metadata.csv.
-
-Splits:  train (80) / val (20) / test (12, images only used as "unseen")
-Plus a handful of deliberately corrupted test images for the robustness part.
-"""
 import os, csv, json
 import numpy as np
 from skimage.draw import ellipse
@@ -69,12 +51,10 @@ def make_one(seed, density="normal"):
         core = rng.uniform(0.55, 1.0)
         intensity[ry, rx] = np.maximum(intensity[ry, rx], core)
 
-    # soft blur to mimic microscope PSF, then add nucleoli speckle
     intensity = gaussian(intensity, sigma=1.1)
     speck = rng.random((IMG, IMG)) < 0.002
     intensity[speck] = np.minimum(1.0, intensity[speck] + 0.3)
 
-    # background haze + poisson-like noise
     bg = rng.uniform(0.02, 0.06)
     intensity = np.clip(intensity + bg, 0, 1)
     intensity = random_noise(intensity, mode="gaussian", var=0.0015, rng=rng)

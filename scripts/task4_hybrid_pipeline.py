@@ -1,11 +1,4 @@
-"""Task 4: full hybrid pipeline on the unseen test split -> aggregated CSV.
 
-Requires a trained U-Net checkpoint at outputs/checkpoints/unet_best.pt
-(run scripts/task3_train_unet.py first).
-
-Run from the project root:
-    python scripts/task4_hybrid_pipeline.py
-"""
 import sys
 from pathlib import Path
 

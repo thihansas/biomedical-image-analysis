@@ -1,10 +1,4 @@
-"""Task 2: classical (non-DL) segmentation + region features + numbers-first LLM summary.
 
-Pipeline: grayscale image -> Otsu threshold -> morphological cleanup ->
-connected-component labelling -> regionprops_table -> natural-language
-summary of the table -> local text LLM (never sees the image, only the
-summary) -> one-paragraph description + structured JSON.
-"""
 import json
 
 import numpy as np

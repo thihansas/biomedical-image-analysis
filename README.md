@@ -1,6 +1,6 @@
 # AI Imaging Case Study: Fluorescence-Microscopy Nuclei Pipeline
 
-A hybrid biomedical image-analysis pipeline built for Assignment 3: raw image ->
+A hybrid biomedical image-analysis pipeline : raw image ->
 U-Net / classical segmentation -> quantitative region features -> structured JSON
 record -> narrative, evaluated against a local multimodal VLM description. All
 LLM calls run locally via [Ollama](https://ollama.com); no cloud APIs are used.

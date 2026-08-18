@@ -1,4 +1,4 @@
-"""Task 3: train the small U-Net, evaluate with Dice/IoU, and save diagnostic figures."""
+
 import json
 
 import matplotlib.pyplot as plt

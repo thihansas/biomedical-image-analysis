@@ -1,8 +1,4 @@
-"""One-off script: build the Otsu-vs-U-Net qualitative comparison figure used in the
-report (Task 3/Q2). Reuses src.otsu_vs_unet output to pick the two example images
-(closest U-Net/Otsu margin and largest margin) and renders input / GT / Otsu / U-Net
-panels for each.
-"""
+
 import json
 
 import matplotlib.pyplot as plt

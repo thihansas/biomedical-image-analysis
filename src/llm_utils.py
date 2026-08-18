@@ -1,11 +1,4 @@
-"""Shared helpers for talking to local Ollama models and getting back valid JSON.
 
-Both the vision step (Task 1) and the text-only interpretation steps (Task 2,
-Task 4) need the same thing: send a prompt (optionally with an image), get a
-JSON object back that matches an expected schema, and retry if the model's
-output isn't parseable. Centralising that here keeps the task-specific
-modules focused on *what* to ask rather than *how* to parse the answer.
-"""
 import json
 import re
 

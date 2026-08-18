@@ -1,8 +1,4 @@
-"""Central configuration: paths, image size, split names, and the Ollama models used.
 
-Kept in one place so every script/notebook agrees on where data lives and which
-local models to call, without hard-coding paths throughout the codebase.
-"""
 from pathlib import Path
 
 # --- Paths -------------------------------------------------------------
@@ -22,9 +18,9 @@ IMG_SIZE = 256  # dataset already ships at 256x256; kept explicit for the resize
 # --- Ollama models -------------------------------------------------------
 # Vision-capable model used only for the direct image description (Task 1).
 # If this fails to load with "unknown model architecture: 'mllama'", that is an
-# upstream Ollama bug on newer Ollama versions (see README's Ollama version note).
-# Pin Ollama to v0.23.4, or swap in an alternative vision model here (the module
-# lecturer has confirmed qwen2.5vl / qwen3-vl / a ministral vision variant are
+# upstream Ollama bug on newer Ollama versions.
+# Pin Ollama to v0.23.4, or swap in an alternative vision model here 
+# (qwen2.5vl / qwen3-vl / a ministral vision variant are
 # acceptable substitutes) -- everything downstream only ever reads config.VLM_MODEL.
 VLM_MODEL = "llama3.2-vision"
 # Lightweight text-only model used for numbers-only interpretation (Task 2, Task 4).
