@@ -3,7 +3,7 @@ import numpy as np
 
 
 def dice_score(pred_mask: np.ndarray, gt_mask: np.ndarray, eps: float = 1e-7) -> float:
-    """Dice/F1 overlap between two boolean (or 0/1) masks of the same shape."""
+    """Dice/F1 overlap between two same-shape boolean (or 0/1) masks."""
     pred = pred_mask.astype(bool)
     gt = gt_mask.astype(bool)
     intersection = np.logical_and(pred, gt).sum()
@@ -11,7 +11,7 @@ def dice_score(pred_mask: np.ndarray, gt_mask: np.ndarray, eps: float = 1e-7) ->
 
 
 def iou_score(pred_mask: np.ndarray, gt_mask: np.ndarray, eps: float = 1e-7) -> float:
-    """Intersection-over-Union between two boolean (or 0/1) masks of the same shape."""
+    """IoU between two same-shape boolean (or 0/1) masks."""
     pred = pred_mask.astype(bool)
     gt = gt_mask.astype(bool)
     intersection = np.logical_and(pred, gt).sum()

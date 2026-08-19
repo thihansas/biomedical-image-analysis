@@ -26,7 +26,6 @@ def trace_one(model: UNet, device: str, base_image_id: str, corrupted_filename: 
     corrupt_img = _load_corrupted(corrupted_filename)
     gt_mask = np.array(Image.open(config.DATA_DIR / "test" / "masks" / f"{base_image_id}.png").convert("L")) > 127
 
-    # Stage 1: raw pixel stats
     stage1 = {
         "clean_mean": float(clean_img.mean()), "corrupt_mean": float(corrupt_img.mean()),
         "clean_std": float(clean_img.std()), "corrupt_std": float(corrupt_img.std()),
@@ -34,7 +33,6 @@ def trace_one(model: UNet, device: str, base_image_id: str, corrupted_filename: 
     stage1["mean_pct_change"] = 100 * (stage1["corrupt_mean"] - stage1["clean_mean"]) / (stage1["clean_mean"] + 1e-7)
     stage1["std_pct_change"] = 100 * (stage1["corrupt_std"] - stage1["clean_std"]) / (stage1["clean_std"] + 1e-7)
 
-    # Stage 2: U-Net mask overlap vs the ORIGINAL ground truth
     clean_pred = run_unet_inference(model, clean_img, device)
     corrupt_pred = run_unet_inference(model, corrupt_img, device)
     stage2 = {
@@ -45,7 +43,6 @@ def trace_one(model: UNet, device: str, base_image_id: str, corrupted_filename: 
     }
     stage2["dice_drop"] = stage2["clean_dice_vs_gt"] - stage2["corrupt_dice_vs_gt"]
 
-    # Stage 3: regionprops feature table
     clean_df = extract_region_table(clean_img, clean_pred)
     corrupt_df = extract_region_table(corrupt_img, corrupt_pred)
     stage3 = {
@@ -55,7 +52,6 @@ def trace_one(model: UNet, device: str, base_image_id: str, corrupted_filename: 
     }
     stage3["n_objects_pct_change"] = 100 * (stage3["corrupt_n_objects"] - stage3["clean_n_objects"]) / max(stage3["clean_n_objects"], 1)
 
-    # Stage 4: LLM narrative on the corrupted feature table
     from . import llm_utils
     from .hybrid_pipeline import NARRATIVE_PROMPT_TEMPLATE
     corrupt_summary = summarise_table(corrupt_df)

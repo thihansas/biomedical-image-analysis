@@ -1,16 +1,16 @@
 # AI Imaging Case Study: Fluorescence-Microscopy Nuclei Pipeline
 
-A hybrid biomedical image-analysis pipeline : raw image ->
-U-Net / classical segmentation -> quantitative region features -> structured JSON
-record -> narrative, evaluated against a local multimodal VLM description. All
-LLM calls run locally via [Ollama](https://ollama.com); no cloud APIs are used.
+A hybrid biomedical image-analysis pipeline: raw image, then U-Net or classical
+segmentation, then quantitative region features, then a structured JSON record
+and narrative, all evaluated against a local multimodal VLM description. Every
+LLM call runs locally through [Ollama](https://ollama.com); there are no cloud APIs
+involved.
 
 **Modality / dataset:** synthetic fluorescence-microscopy nuclei images (DAPI-like
 staining), from https://github.com/Nickolay-K/Assingnment-3-dataset. 256x256 RGB
 images with paired binary masks and instance labels, split train(80)/val(20)/test(12),
-plus 4 corrupted test-image variants (heavy blur / low contrast) used for the
-robustness extension. See `data/nuclei_dataset/README.md` for the dataset's own
-documentation.
+plus 4 corrupted test-image variants (heavy blur / low contrast) for the robustness
+extension. `data/nuclei_dataset/README.md` documents the dataset itself.
 
 ## Repository layout
 
@@ -32,7 +32,7 @@ src/                     all pipeline logic, as importable functions
 scripts/                 thin runnable entry points, one per task (see below)
 report/
   report.html              4-page report source (2-column, print-ready)
-  report.pdf                rendered report -- THE FILE TO SUBMIT (exactly 4 pages)
+  report.pdf                rendered report, THE FILE TO SUBMIT (exactly 4 pages)
   report.docx                editable Word version (single-column; same content, ~8 pages)
   build_docx.py              regenerates report.docx from scratch (python-docx)
 outputs/
@@ -50,35 +50,34 @@ outputs/
    ollama pull llama3.2-vision
    ollama pull llama3.2
    ```
-   `llama3.2-vision` (11B, Q4_K_M) needs roughly **11GB of free RAM** to load. Close
-   other memory-heavy applications first if the load fails with a "requires more
-   system memory" error.
+   `llama3.2-vision` (11B, Q4_K_M) needs roughly **11GB of free RAM** to load. If it
+   fails with a "requires more system memory" error, close other memory-heavy
+   applications and try again.
 
-   **Important Ollama version note:** Ollama's newer inference engine (v0.30.0
-   onward, as of testing in August 2026) has a regression where it fails to load
-   `llama3.2-vision` with `error loading model: unknown model architecture: 'mllama'`
+   One thing to watch for: Ollama's newer inference engine (v0.30.0 onward, as of
+   testing in August 2026) fails to load `llama3.2-vision`, throwing
+   `error loading model: unknown model architecture: 'mllama'`
    ([ollama/ollama#16490](https://github.com/ollama/ollama/issues/16490),
-   [#16547](https://github.com/ollama/ollama/issues/16547)). This is an upstream
-   Ollama bug, not a bug in this code. This pipeline was developed and run against
-   **Ollama v0.23.4**, the last release before that regression, which loads
-   `llama3.2-vision` correctly. If Task 1's VLM step fails with the `mllama`
-   error on your machine, install v0.23.4 from
+   [#16547](https://github.com/ollama/ollama/issues/16547)). That's an upstream Ollama
+   bug rather than anything in this code. I developed and ran this against
+   **Ollama v0.23.4**, the last release before the regression, which loads
+   `llama3.2-vision` fine. If Task 1's VLM step hits the `mllama` error on your
+   machine, grab v0.23.4 from
    https://github.com/ollama/ollama/releases/tag/v0.23.4 (Windows: `OllamaSetup.exe`
-   from that release page) rather than the latest version.
+   on that page) instead of the current release.
 
-   **Module lecturer's officially sanctioned fallback:** since this `mllama` bug affects
-   other students too, the lecturer has confirmed it's fine to swap in an alternative
-   local vision model if pinning to v0.23.4 isn't practical (e.g. current Ollama install
-   is managed/can't be downgraded) -- e.g. `qwen2.5vl` / `qwen3-vl`, or a `ministral`
-   vision variant -- or to run `llama3.2-vision` itself in Colab (see the Lab 2 notebook)
-   instead of locally. To substitute a model here, just change `VLM_MODEL` in
-   `src/config.py` to the pulled model's Ollama tag (e.g. `ollama pull qwen2.5vl` then
-   `VLM_MODEL = "qwen2.5vl"`) -- `src/vlm_description.py` and the rest of the pipeline
-   are unchanged, since they only ever reference `config.VLM_MODEL`. Note that swapping
-   models will change the exact VLM outputs from the ones already saved in
-   `outputs/json_records/task1_vlm_description.json` and quoted in the report, so if you
-   re-run Task 1 with a different model, regenerate those before treating the report text
-   as authoritative.
+   The lecturer has confirmed this fallback for anyone hitting the same bug: swap
+   in a different local vision model if downgrading Ollama isn't practical (say the
+   install is managed and can't be rolled back) — `qwen2.5vl`, `qwen3-vl`, or a
+   `ministral` vision variant all work, as does running `llama3.2-vision` in Colab
+   (see the Lab 2 notebook) rather than locally. To switch models, just change
+   `VLM_MODEL` in `src/config.py` to the pulled model's tag (e.g.
+   `ollama pull qwen2.5vl` then `VLM_MODEL = "qwen2.5vl"`); nothing else needs to
+   change since `src/vlm_description.py` and the rest of the pipeline only ever read
+   `config.VLM_MODEL`. Keep in mind that a different model will give different VLM
+   outputs than what's already saved in `outputs/json_records/task1_vlm_description.json`
+   and quoted in the report — regenerate those before trusting the report text if you
+   re-run Task 1 on a new model.
 3. The dataset is already included under `data/nuclei_dataset/`.
 
 ## Running
@@ -102,36 +101,39 @@ python scripts/make_report_figure_otsu_vs_unet.py   # outputs/figures/otsu_vs_un
 python scripts/make_report_figure_robustness.py     # outputs/figures/robustness_panels.png
 ```
 
-`report/report.html` is the report source (renders to exactly 4 pages); `report/report.pdf`
-is the rendered version submitted alongside the code. Regenerate the PDF after editing the
-HTML with a headless Chromium/Edge print, e.g.:
+`report/report.html` is the report source and renders to exactly 4 pages; `report/report.pdf`
+is the version submitted alongside the code. After editing the HTML, regenerate the PDF with
+a headless Chromium/Edge print, e.g.:
 ```
 msedge --headless --disable-gpu --no-sandbox --user-data-dir=<scratch-dir> \
   --no-pdf-header-footer --print-to-pdf=report/report.pdf report/report.html
 ```
 
 Every script prints a summary to the console and writes its figures/JSON/CSV to
-`outputs/`. Figures are saved at the resolution used in the report; JSON records
-include the exact prompts used, so the "optimised prompt" text in the report is
-copied directly from `outputs/json_records/*.json` / the `*_PROMPT` constants in
-`src/vlm_description.py` and `src/classical_features.py`.
+`outputs/`. Figures are saved at the resolution used in the report, and the JSON
+records keep the exact prompts used — so the "optimised prompt" text quoted in the
+report is copied straight out of `outputs/json_records/*.json` and the `*_PROMPT`
+constants in `src/vlm_description.py` and `src/classical_features.py`.
 
 ## Design notes
 
-- **Otsu + morphology, not deep learning, for Task 2**: this keeps the numbers
-  the LLM sees fully deterministic and auditable, which is the point of the
-  numbers-first comparison against the direct VLM description.
-- **The LLM never computes the JSON's numeric fields itself** in Task 2/4 -- see
-  `classical_features.derive_heuristic_json` and `hybrid_pipeline.process_image`,
-  where `n_objects`, `mean_area`, and `density_class` come from the regionprops
-  table in code. The LLM only produces the free-text narrative/paragraph and a
-  qualitative flag, so a hallucinated LLM output cannot corrupt the structured
-  "source of truth" record.
-- **U-Net is intentionally small** (base width 16, ~a few hundred thousand
-  parameters) given only 80 training images and CPU-only training; a full-width
-  U-Net would be slower to train and more prone to overfitting at this scale.
-- **Text LLM (`llama3.2`) vs vision LLM (`llama3.2-vision`)**: Task 1 uses the
-  vision model because it is given the actual image. Tasks 2 and 4 deliberately
-  use the smaller text-only model because they are only ever given numbers, not
-  pixels -- this is also cheaper/faster and makes the "numbers-only" boundary
-  explicit in the code, not just in the prompt.
+Otsu + morphology rather than deep learning for Task 2 keeps the numbers the LLM
+sees fully deterministic and auditable — that determinism is the whole point of
+comparing the numbers-first approach against the direct VLM description.
+
+The LLM never computes the JSON's numeric fields itself in Task 2 or Task 4. Look at
+`classical_features.derive_heuristic_json` and `hybrid_pipeline.process_image`:
+`n_objects`, `mean_area`, and `density_class` all come from the regionprops table in
+code, and the LLM only ever produces the free-text narrative/paragraph plus a
+qualitative flag. A hallucinated LLM output therefore can't corrupt the structured
+"source of truth" record.
+
+The U-Net is deliberately small (base width 16, a few hundred thousand parameters),
+since there are only 80 training images and training runs on CPU — a full-width
+U-Net would just be slower to train and more likely to overfit at this scale.
+
+Task 1 uses the vision model (`llama3.2-vision`) because it's given the actual
+image. Tasks 2 and 4 use the smaller text-only model (`llama3.2`) on purpose,
+since they only ever see numbers rather than pixels; that's cheaper and faster,
+and it makes the numbers-only boundary explicit in the code rather than just in
+the prompt wording.

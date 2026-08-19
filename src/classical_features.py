@@ -44,11 +44,11 @@ Give the paragraph first, then the JSON object, no markdown fences.
 
 
 def segment_otsu(gray_img: np.ndarray, min_object_size: int = 15) -> np.ndarray:
-    """Otsu threshold + morphological cleanup -> boolean foreground mask.
+    """Otsu threshold + morphological cleanup, returns a boolean foreground mask.
 
-    Nuclei are bright-on-dark, so the foreground is pixels *above* the Otsu
-    threshold. Small opening removes speckle noise; removing small objects
-    discards leftover single-pixel/few-pixel noise blobs.
+    Nuclei are bright on a dark background, so foreground is pixels above
+    the threshold. Opening clears speckle noise, then small leftover blobs
+    are dropped outright.
     """
     thresh = threshold_otsu(gray_img)
     binary = gray_img > thresh
@@ -59,7 +59,7 @@ def segment_otsu(gray_img: np.ndarray, min_object_size: int = 15) -> np.ndarray:
 
 
 def extract_region_table(gray_img: np.ndarray, binary_mask: np.ndarray) -> pd.DataFrame:
-    """Label connected components and compute a regionprops feature table."""
+    """Label connected components, compute regionprops for each."""
     labels = measure.label(binary_mask)
     if labels.max() == 0:
         return pd.DataFrame(columns=REGIONPROPS_FEATURES)
@@ -68,7 +68,7 @@ def extract_region_table(gray_img: np.ndarray, binary_mask: np.ndarray) -> pd.Da
 
 
 def summarise_table(df: pd.DataFrame) -> str:
-    """Turn a regionprops DataFrame into a short natural-language numeric summary."""
+    """Regionprops DataFrame -> short numeric summary as plain text."""
     if df.empty:
         return "No objects were detected above the segmentation threshold."
 
@@ -87,11 +87,10 @@ def summarise_table(df: pd.DataFrame) -> str:
 
 
 def derive_heuristic_json(df: pd.DataFrame) -> dict:
-    """A deterministic, code-computed version of the same JSON schema we ask the LLM for.
+    """Compute the same JSON schema we ask the LLM for, but deterministically from the data.
 
-    This is the 'source of truth' companion to the LLM's JSON: if the LLM's
-    JSON disagrees with this, the code-derived version is what should be
-    trusted downstream (see report Q4 on hallucination mitigation).
+    Used as the source of truth downstream when the LLM's JSON disagrees
+    with it (report Q4 covers this as the hallucination-mitigation step).
     """
     n = len(df)
     if n == 0:
@@ -117,17 +116,17 @@ def derive_heuristic_json(df: pd.DataFrame) -> dict:
 
 
 def interpret_with_llm(summary_text: str) -> tuple[str, dict]:
-    """Send the numeric summary (no image) to the local text LLM; return (paragraph, json)."""
+    """Send the numeric summary (no image) to the local text LLM, get back (paragraph, json)."""
     prompt = INTERPRETATION_PROMPT_TEMPLATE.format(summary_text=summary_text)
     parsed_json, raw_text = llm_utils.chat_json(config.TEXT_LLM_MODEL, prompt)
-    # Paragraph is whatever text precedes the JSON block in the raw response.
+    # everything before the JSON block is the paragraph
     json_start = raw_text.find("{")
     paragraph = raw_text[:json_start].strip() if json_start > 0 else raw_text.strip()
     return paragraph, parsed_json
 
 
 def run_task2(split: str = "train", image_id: str = "train_004") -> dict:
-    """Full Task 2 pipeline on one representative image; saves + returns the record."""
+    """Run the full Task 2 pipeline on one image, save and return the record."""
     gray_img = data_prep.load_and_preprocess(split, image_id)
     binary_mask = segment_otsu(gray_img)
     df = extract_region_table(gray_img, binary_mask)

@@ -39,19 +39,19 @@ def _image_path(split: str, image_id: str) -> str:
 
 
 def describe_naive(split: str, image_id: str) -> str:
-    """Free-text response to the naive prompt (no JSON schema requested)."""
+    """Free-text response to the naive prompt, no JSON schema requested."""
     img_path = _image_path(split, image_id)
     return llm_utils.chat_text(config.VLM_MODEL, NAIVE_PROMPT, images=[img_path])
 
 
 def describe_optimised(split: str, image_id: str) -> tuple[dict, str]:
-    """Structured (JSON) response to the optimised, descriptive-not-diagnostic prompt."""
+    """Structured JSON response to the optimised, descriptive-not-diagnostic prompt."""
     img_path = _image_path(split, image_id)
     return llm_utils.chat_json(config.VLM_MODEL, OPTIMISED_PROMPT, images=[img_path])
 
 
 def repeated_runs(split: str, image_id: str, n: int = 3) -> list[dict]:
-    """Run the optimised prompt `n` times on the same image to show run-to-run variability."""
+    """Run the optimised prompt n times on the same image, to show run-to-run variability."""
     img_path = _image_path(split, image_id)
     runs = []
     for i in range(n):
@@ -64,10 +64,7 @@ def repeated_runs(split: str, image_id: str, n: int = 3) -> list[dict]:
 
 
 def run_task1_vlm(split: str = "train", image_id: str = "train_004", n_repeats: int = 3) -> dict:
-    """Full Task 1 VLM comparison: naive vs optimised, plus repeated-run variability.
-
-    Saves the record to outputs/json_records/task1_vlm_description.json and returns it.
-    """
+    """Full Task 1 VLM comparison (naive vs optimised, repeated-run variability), saved + returned."""
     naive_text = describe_naive(split, image_id)
     optimised_json, optimised_raw = describe_optimised(split, image_id)
     variability = repeated_runs(split, image_id, n=n_repeats)

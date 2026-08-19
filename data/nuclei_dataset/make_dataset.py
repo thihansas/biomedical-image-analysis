@@ -13,12 +13,11 @@ def _rng(seed):
     return np.random.default_rng(seed)
 
 def make_one(seed, density="normal"):
-    """Return (rgb_uint8, binary_uint8, label_uint16, stats dict)."""
+    """(rgb_uint8, binary_uint8, label_uint16, stats dict) for one synthetic image."""
     rng = _rng(seed)
     label = np.zeros((IMG, IMG), np.uint16)
     intensity = np.zeros((IMG, IMG), np.float32)
 
-    # choose number of nuclei by density regime
     n_map = {"sparse": (4, 12), "normal": (15, 40), "dense": (45, 85), "clustered": (30, 60)}
     lo, hi = n_map[density]
     n_target = int(rng.integers(lo, hi + 1))
@@ -29,7 +28,7 @@ def make_one(seed, density="normal"):
     while placed < n_target and attempts < n_target * 25:
         attempts += 1
         if density == "clustered" and centers and rng.random() < 0.6:
-            # place near an existing centre to form clumps
+            # clump around an existing centre
             cx0, cy0 = centers[rng.integers(0, len(centers))]
             r = rng.normal(0, 10)
             cc = int(np.clip(cx0 + r, 8, IMG - 8))
@@ -37,9 +36,8 @@ def make_one(seed, density="normal"):
         else:
             rr = int(rng.integers(8, IMG - 8))
             cc = int(rng.integers(8, IMG - 8))
-        # nucleus size / shape
         a = rng.uniform(5, 12)              # semi-major
-        b = a * rng.uniform(0.55, 0.98)     # semi-minor -> eccentricity variety
+        b = a * rng.uniform(0.55, 0.98)     # semi-minor, varies eccentricity
         theta = rng.uniform(0, np.pi)
         ry, rx = ellipse(rr, cc, a, b, rotation=theta, shape=(IMG, IMG))
         if ry.size == 0:
@@ -47,8 +45,7 @@ def make_one(seed, density="normal"):
         placed += 1
         centers.append((cc, rr))
         label[ry, rx] = placed
-        # textured intensity: bright core, softer edge, per-nucleus brightness
-        core = rng.uniform(0.55, 1.0)
+        core = rng.uniform(0.55, 1.0)  # per-nucleus brightness, blurred below for a soft edge
         intensity[ry, rx] = np.maximum(intensity[ry, rx], core)
 
     intensity = gaussian(intensity, sigma=1.1)
@@ -60,8 +57,7 @@ def make_one(seed, density="normal"):
     intensity = random_noise(intensity, mode="gaussian", var=0.0015, rng=rng)
     intensity = np.clip(intensity, 0, 1)
 
-    # DAPI-like blue staining: put signal mostly in blue, a little in green
-    rgb = np.zeros((IMG, IMG, 3), np.float32)
+    rgb = np.zeros((IMG, IMG, 3), np.float32)  # DAPI-like: mostly blue, a little green
     rgb[..., 2] = intensity                      # blue
     rgb[..., 1] = intensity * 0.35               # green
     rgb[..., 0] = intensity * 0.12               # red
@@ -98,7 +94,7 @@ def build(out_dir="nuclei_dataset"):
             st.update(split=split, image_id=stem, seed=int(seed))
             meta_rows.append(st)
 
-    # corrupted variants of two test images (for the robustness part)
+    # blurred/low-contrast variants of two test images, for the robustness extension
     corr_dir = os.path.join(out_dir, "test_corrupted", "images")
     os.makedirs(corr_dir, exist_ok=True)
     from skimage.filters import gaussian as gb
@@ -106,10 +102,9 @@ def build(out_dir="nuclei_dataset"):
         rgb = imageio.imread(os.path.join(out_dir, "test", "images", src + ".png")).astype(np.float32) / 255
         blur = np.clip(gb(rgb, sigma=6, channel_axis=-1), 0, 1)
         imsave(os.path.join(corr_dir, src + "_blur.png"), (blur * 255).astype(np.uint8), check_contrast=False)
-        contrast = np.clip((rgb - 0.5) * 0.15 + 0.5, 0, 1)   # crushed contrast
+        contrast = np.clip((rgb - 0.5) * 0.15 + 0.5, 0, 1)   # crush the contrast
         imsave(os.path.join(corr_dir, src + "_lowcontrast.png"), (contrast * 255).astype(np.uint8), check_contrast=False)
 
-    # metadata.csv
     with open(os.path.join(out_dir, "metadata.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=["image_id", "split", "density", "n_objects",
                                           "mean_intensity", "area_fraction", "seed"])

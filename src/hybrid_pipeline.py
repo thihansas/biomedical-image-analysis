@@ -42,7 +42,7 @@ def run_unet_inference(model: UNet, gray_img: np.ndarray, device: str) -> np.nda
 
 
 def process_image(model: UNet, device: str, split: str, image_id: str) -> dict:
-    """Run one test image through the full hybrid pipeline; returns its JSON record + narrative."""
+    """Run one test image through the full hybrid pipeline, return its JSON record + narrative."""
     gray_img = data_prep.load_and_preprocess(split, image_id)
     pred_mask = run_unet_inference(model, gray_img, device)
     df = extract_region_table(gray_img, pred_mask)
@@ -70,8 +70,7 @@ def process_image(model: UNet, device: str, split: str, image_id: str) -> dict:
 
 
 def run_task4(split: str = "test", checkpoint_path=None) -> pd.DataFrame:
-    """Run the hybrid pipeline over every image in `split`, save per-image JSON
-    records and one aggregated CSV. Returns the aggregated DataFrame."""
+    """Run the hybrid pipeline over every image in split, save per-image JSON + one CSV."""
     checkpoint_path = checkpoint_path or config.CHECKPOINT_DIR / "unet_best.pt"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = UNet().to(device)

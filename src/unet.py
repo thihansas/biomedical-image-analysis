@@ -4,7 +4,7 @@ import torch.nn as nn
 
 
 class DoubleConv(nn.Module):
-    """(Conv -> BatchNorm -> ReLU) x2, the basic U-Net building block."""
+    """(Conv -> BatchNorm -> ReLU) x2, the basic U-Net block."""
 
     def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
@@ -22,10 +22,10 @@ class DoubleConv(nn.Module):
 
 
 class UNet(nn.Module):
-    """Small U-Net: encoder-decoder with skip connections, 1-channel in/out.
+    """Small encoder-decoder U-Net with skip connections, 1 channel in/out.
 
-    Input:  (B, 1, H, W) grayscale image, H and W divisible by 16.
-    Output: (B, 1, H, W) raw logits (apply sigmoid for a probability mask).
+    Input (B, 1, H, W) grayscale, H/W divisible by 16. Output is raw logits
+    of the same shape; sigmoid it for a probability mask.
     """
 
     def __init__(self, in_channels: int = 1, out_channels: int = 1, base_channels: int = 16):
@@ -68,7 +68,7 @@ class UNet(nn.Module):
 
 
 class DiceLoss(nn.Module):
-    """Soft Dice loss on sigmoid probabilities, used alongside BCE for a combined loss."""
+    """Soft Dice loss on sigmoid probabilities."""
 
     def __init__(self, eps: float = 1e-7):
         super().__init__()
@@ -84,8 +84,7 @@ class DiceLoss(nn.Module):
 
 
 class BCEDiceLoss(nn.Module):
-    """Combined BCE + Dice loss: BCE for stable pixelwise gradients early in training,
-    Dice to directly optimise the overlap metric we evaluate with."""
+    """BCE (stable early gradients) + Dice (optimises the overlap metric directly)."""
 
     def __init__(self):
         super().__init__()

@@ -15,10 +15,7 @@ def list_image_ids(split: str) -> list[str]:
 
 
 def load_and_preprocess(split: str, image_id: str, size: int = config.IMG_SIZE) -> np.ndarray:
-    """Load one raw RGB PNG, convert to grayscale, resize to `size`x`size`.
-
-    Returns a uint8 array of shape (size, size).
-    """
+    """Load one RGB PNG, convert to grayscale, resize to size x size. Returns uint8."""
     path = config.DATA_DIR / split / "images" / f"{image_id}.png"
     img = Image.open(path).convert("L")  # grayscale
     if img.size != (size, size):
@@ -27,13 +24,13 @@ def load_and_preprocess(split: str, image_id: str, size: int = config.IMG_SIZE) 
 
 
 def preprocess_split(split: str, size: int = config.IMG_SIZE) -> dict[str, np.ndarray]:
-    """Preprocess every image in a split. Returns {image_id: grayscale array}."""
+    """Preprocess every image in a split, {image_id: grayscale array}."""
     return {img_id: load_and_preprocess(split, img_id, size) for img_id in list_image_ids(split)}
 
 
 def plot_sample_grid(images: dict[str, np.ndarray], n: int = 9, save_path: Path | None = None,
                       seed: int = config.RANDOM_SEED) -> Path:
-    """Save a grid of `n` randomly sampled preprocessed images with their ids as titles."""
+    """Save a grid of n randomly sampled images, titled with their ids."""
     rng = np.random.default_rng(seed)
     ids = sorted(images.keys())
     chosen = rng.choice(ids, size=min(n, len(ids)), replace=False)
@@ -58,7 +55,7 @@ def plot_sample_grid(images: dict[str, np.ndarray], n: int = 9, save_path: Path 
 
 
 def plot_intensity_histogram(images: dict[str, np.ndarray], save_path: Path | None = None) -> Path:
-    """Save a histogram of pixel intensities pooled across all images in the split."""
+    """Save a histogram of pixel intensities, pooled across the split."""
     all_pixels = np.concatenate([img.ravel() for img in images.values()])
 
     fig, ax = plt.subplots(figsize=(6, 4))
@@ -75,10 +72,7 @@ def plot_intensity_histogram(images: dict[str, np.ndarray], save_path: Path | No
 
 
 def run_eda(split: str = "train") -> dict:
-    """Preprocess a split and save the sample grid + intensity histogram figures.
-
-    Returns a small dict of summary stats, useful for printing/logging.
-    """
+    """Preprocess a split, save the sample grid + intensity histogram, return summary stats."""
     images = preprocess_split(split)
     grid_path = plot_sample_grid(images)
     hist_path = plot_intensity_histogram(images)

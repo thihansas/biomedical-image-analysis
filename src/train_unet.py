@@ -22,7 +22,7 @@ def get_dataloaders(batch_size: int = 4) -> tuple[DataLoader, DataLoader]:
 
 @torch.no_grad()
 def evaluate(model: UNet, loader: DataLoader, device: str) -> dict:
-    """Mean Dice and IoU over a loader, plus per-image scores for later inspection."""
+    """Mean Dice/IoU over a loader, plus per-image scores."""
     model.eval()
     dices, ious, ids = [], [], []
     for imgs, masks, image_ids in loader:
@@ -40,8 +40,7 @@ def evaluate(model: UNet, loader: DataLoader, device: str) -> dict:
 
 
 def train(epochs: int = 40, lr: float = 1e-3, batch_size: int = 4, seed: int = config.RANDOM_SEED) -> dict:
-    """Train the U-Net, tracking train loss and val Dice per epoch. Saves the best checkpoint
-    (by val Dice) and the loss/Dice curves, and returns a results dict."""
+    """Train the U-Net, saving the best checkpoint by val Dice plus the loss/Dice curves."""
     torch.manual_seed(seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -118,7 +117,7 @@ def plot_curves(history: dict, save_path=None):
 
 @torch.no_grad()
 def plot_prediction_panels(model: UNet, loader: DataLoader, device: str, n: int = 3, save_path=None):
-    """Save input / ground-truth / prediction panels for `n` validation images."""
+    """Save input / ground-truth / prediction panels for n validation images."""
     model.eval()
     imgs, masks, ids = next(iter(loader))
     imgs, masks = imgs.to(device), masks.to(device)

@@ -8,10 +8,9 @@ from . import config, data_prep
 
 
 class NucleiDataset(Dataset):
-    """Loads grayscale images and their 0/255 binary masks for one split.
+    """Grayscale images + binary masks for one split, as (1, H, W) float32 tensors.
 
-    Images are normalised to [0, 1]; masks are binarised to {0, 1} floats.
-    Both are returned as (1, H, W) float32 tensors.
+    Images normalised to [0, 1], masks binarised to {0, 1}.
     """
 
     def __init__(self, split: str, image_ids: list[str] | None = None):
@@ -23,7 +22,7 @@ class NucleiDataset(Dataset):
 
     def __getitem__(self, idx: int):
         image_id = self.image_ids[idx]
-        img = data_prep.load_and_preprocess(self.split, image_id)  # uint8 (H, W)
+        img = data_prep.load_and_preprocess(self.split, image_id)
         mask_path = config.DATA_DIR / self.split / "masks" / f"{image_id}.png"
         mask = np.array(Image.open(mask_path).convert("L"))
 
